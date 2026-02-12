@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Upload Logs{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Upload Logs</h1>
+    <a href="{{ url_for('admin.admin_panel') }}" class="btn btn-secondary" style="margin-bottom:16px;">Back</a>
+
+    {% if logs %}
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>File</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Error</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.user_email }}</td>
+                    <td>{{ log.filename }}</td>
+                    <td>{{ log.upload_date }}</td>
+                    <td>
+                        {% if log.status == 'success' %}
+                            <span class="badge badge-success">Success</span>
+                        {% else %}
+                            <span class="badge badge-error">Error</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ log.error_type or '—' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="empty-state">No logs yet.</div>
+    {% endif %}
+</div>
+{% endblock %}

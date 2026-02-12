@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Aggregated Results by Year</h1>
+
+    {% if data %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    {% for col in columns %}
+                        <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td>{{ row.year | int }}</td>
+                    {% for col in columns %}
+                        <td>{{ "{:,.0f}".format(row[col]) }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary">Upload More</a>
+            {% if current_user.role == 'admin' %}
+            <form action="{{ url_for('main.clear') }}" method="post"
+                  onsubmit="return confirm('Clear all data?')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-danger">Clear Database</button>
+            </form>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>No data yet. Upload a file to get started.</p>
+            <br>
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary">Upload File</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}File Upload{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Upload Data</h1>
+
+    <form action="{{ url_for('main.upload') }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="upload-area">
+            <h2>Choose a file</h2>
+            <input type="file" name="file" accept=".csv,.xls,.xlsx">
+            <p>Supported formats: .csv, .xls, .xlsx</p>
+            <p>Column order does not matter — mapping is done by column names.</p>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+
+<div class="card">
+    <h1>Expected Columns (Template)</h1>
+    <table>
+        <tr>
+            <th>Column</th>
+            <th>Type</th>
+        </tr>
+        {% for col in columns %}
+        <tr><td>{{ col.name }}</td><td>{{ col.type }}</td></tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

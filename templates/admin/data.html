@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Full Data Table{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Full Uploaded Data Table</h1>
+    <a href="{{ url_for('admin.admin_panel') }}" class="btn btn-secondary" style="margin-bottom:16px;">Back</a>
+
+    {% if records %}
+    <p style="color:#7f8c8d; margin-bottom:12px;">Total records: {{ records|length }}</p>
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    {% for col in columns %}
+                        <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in records %}
+                <tr>
+                    {% for col in columns %}
+                        <td>{{ row[col] if row[col] is not none else '—' }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="empty-state">No data yet.</div>
+    {% endif %}
+</div>
+{% endblock %}
